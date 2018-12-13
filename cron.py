@@ -90,11 +90,16 @@ class Cron:
 
         #print("Parsing [%s]"  % path)
         import pathlib
+        import os
 
         jobs = []
 
         # slurp in the file
-        text = pathlib.Path(path).read_text()
+
+        if os.path.isfile(path) and os.access(path, os.R_OK):
+            text = pathlib.Path(path).read_text()
+        else:
+            return None
 
         # for now, this assumes that there is 1 job per line.
         # Yes, this is a bad assumption, but do the simple case first.

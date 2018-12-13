@@ -31,7 +31,6 @@ atd_paths = [
 
 if __name__ == '__main__':
 
-
     jobs = []
     crontab_files = Cron.find_crontabs()
     cron_script_files = Cron.find_cron_scripts()
@@ -41,7 +40,9 @@ if __name__ == '__main__':
     #print(crontab_files)
 
     for f in crontab_files:
-        jobs.extend(Cron.parse_crontab(f))
+        newjobs = Cron.parse_crontab(f)
+        if newjobs:
+            jobs.extend(newjobs)
 
     #print("Found cron script files:")
     #print(cron_script_files)
