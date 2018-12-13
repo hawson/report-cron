@@ -1,18 +1,32 @@
 '''base class for a "job".  This can be cron, systemd, atd, etc'''
 
 class Job:
+    '''base class for a "job".  This can be cron, systemd, atd, etc'''
 
-    def __init__(self, source, definition, name=None):
+
+    def __init__(self, src, raw, name=None, user=None, cmd=None, when=None):
         '''name - the name given to the job, if any...
-        source - from whence the job came
-        definition - raw or original definition of the job'''
+        src  - from whence the job came
+        raw  - raw or original definition of the job
+        user - user for whom this runs
+        cmd  - command that is run
+        when - "when" the job runs'''
+
         self.name = name
-        self.source = source
-        self.definition = definition
+        self.src = src
+        self.raw = raw
+        self.user = user
+        self.cmd = cmd
+        self.when = when
+
+    def __str__(self):
+        '''Pretty print the job'''
+        return "+---\n|user: {}\n|when: {}\n| cmd: {}\n| src: {}\n| raw: {}".format(
+            self.user, self.when, self.cmd, self.src, self.raw)
 
 
-    def Name(self):
-        if self.name is not None:
-            return self.name
-        else:
-            return ""
+    def as_json(self):
+        """Convert to JSON, and return it"""
+        import json
+        return json.dumps(vars(self))
+
